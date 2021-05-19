@@ -103,6 +103,9 @@ class NewsAdapter(private val eventHandler: EventHandler? = null) : RecyclerView
         }
     }
 
+    /**
+     * Event handler for all recycler view interactions.
+     */
     interface EventHandler {
         fun onNewsItemClicked(news: News)
     }

@@ -189,6 +189,10 @@ class NewsDetailFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, 
     private fun navigateUp() = navController.navigateUp()
 
 
+    /**
+     * dispatches a load page event which will be observed by this fragment and then sent on to
+     * the view model for further processing.
+     */
     override fun dispatchLoadPageEvent() {
         val newsId = arguments?.let { NewsDetailFragmentArgs.fromBundle(it).newsId }
         mEvents.onNext(newsId?.let { LoadPageEvent(it) })

@@ -11,11 +11,8 @@ import javax.inject.Singleton
 @Module
 @InstallIn(ApplicationComponent::class)
 object NetworkModule {
-
     @Singleton @Provides
     fun providesNewsService(): NewsService {
         return ServiceBuilder.buildService(NewsService::class.java)
     }
-
-
 }

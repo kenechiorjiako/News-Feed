@@ -26,6 +26,7 @@ class HomeFragmentVM @ViewModelInject constructor(
 ) : MviViewModel<ViewState, ViewEffect, ViewNavigation, Event, PartialStateChange>() {
 
     init {
+        // init view state
         viewState = ViewState()
     }
 
@@ -64,6 +65,10 @@ class HomeFragmentVM @ViewModelInject constructor(
         }
     }
 
+    /**
+     * handles load page events coming from the view. Fetches latest news items dispatches
+     * a successful state change to the view in return.
+     */
     private fun handleLoadPageEvent() {
         reduceToViewState(LoadingPage)
         getNewsItems()
@@ -74,10 +79,19 @@ class HomeFragmentVM @ViewModelInject constructor(
                 { reduceToViewState(PageLoadError(Throwable("Could not fetch data. Please try again."))) }
             )
     }
+
+    /**
+     * Handles news item click events coming from the view.
+     */
     private fun handleItemSelected(news: News) {
         val direction = HomeFragmentDirections.actionHomeFragmentToNewsDetailFragment(news.id)
         viewNavigation = ViewNavigation.NavigateToFragment(direction)
     }
+
+    /**
+     * handles page refresh events coming from a view. It fetches fresh set of data from the news Repo
+     * and handles results.
+     */
     private fun handleRefreshPageEvent() {
         reduceToViewState(PageRefreshing(true))
         getNewsItems()
@@ -85,17 +99,24 @@ class HomeFragmentVM @ViewModelInject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
-                    reduceToViewState(PageRefreshing(false))
                     reduceToViewState(PageLoaded(it))
                 },
                 {
                     reduceToViewState(PageRefreshing(false))
                     viewEffect = ShowToast("Error refreshing page.", Toast.LENGTH_SHORT)
+                },
+                {
+                    reduceToViewState(PageRefreshing(false))
                 }
             )
     }
 
 
+    /**
+     * Gets the latest news Items from the News Repo.
+     *
+     * @return an observable that dispatches latest news items from local and network data sources.
+     */
     private fun getNewsItems(): Observable<List<News>> {
         val subject: BehaviorSubject<List<News>> = BehaviorSubject.create()
 
@@ -118,13 +139,12 @@ class HomeFragmentVM @ViewModelInject constructor(
                             subject.onError(Throwable("Error loading latest news, please try again."))
                         }
                         detailedState === ResponseKt.DetailedState.ERROR_WITH_DATA -> {
-                            // TODO;
+                            viewEffect = ShowToast("Unable to refresh feed. Please check your network and try again.", Toast.LENGTH_SHORT)
                         }
                     }
                 }
                 .filter { response -> response.data != null }
                 .map { response -> response.data }
-                .takeLast(1)
                 .doOnNext { latestNews -> subject.onNext(latestNews) }
                 .doOnComplete { subject.onComplete() }
 
@@ -132,7 +152,14 @@ class HomeFragmentVM @ViewModelInject constructor(
     }
 
 
-
+    /**
+     * the view state for the home fragment of this application
+     *
+     * @param pageLoading boolean flag indicating whether this page is loading fresh set of data.
+     * @param pageLoadError null if there was no error loading this page
+     * @param pageRefreshing boolean flag indicating whether or not this page is fetching new data.
+     * @param newsItems news Items for the home fragment to display in a list
+     */
     data class ViewState(
         val pageLoading: Boolean = false,
         val pageLoadError: Throwable? = null,
@@ -140,14 +167,23 @@ class HomeFragmentVM @ViewModelInject constructor(
         val newsItems: List<News> = emptyList()
     ) {}
 
+    /**
+     * View Effects for the view to observe and handle
+     */
     sealed class ViewEffect {
         data class ShowToast(val message: String, val length: Int): ViewEffect()
     }
 
+    /**
+     * View navigations for the view to observe and handle
+     */
     sealed class ViewNavigation {
         data class NavigateToFragment(val direction: NavDirections): ViewNavigation()
     }
 
+    /**
+     * STATE_CHANGES that occur after the viewModel handles events.
+     */
     sealed class PartialStateChange {
         object LoadingPage: PartialStateChange()
         data class PageLoaded(val newsItems: List<News>): PartialStateChange()
@@ -155,6 +191,9 @@ class HomeFragmentVM @ViewModelInject constructor(
         data class PageRefreshing(val refreshing: Boolean): PartialStateChange()
     }
 
+    /**
+     * Various events that can be dispatched from a view and handled by this viewModel
+     */
     sealed class Event {
         object LoadPageEvent : Event()
         data class NewsItemSelected(val news: News) : Event()

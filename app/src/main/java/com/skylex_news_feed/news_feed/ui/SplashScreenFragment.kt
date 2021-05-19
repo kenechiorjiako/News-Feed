@@ -19,6 +19,9 @@ import com.skylex_news_feed.news_feed.view_models.SplashScreenVM.Event.*
 import com.skylex_news_feed.news_feed.view_models.SplashScreenVM.ViewEffect.*
 import com.skylex_news_feed.news_feed.view_models.SplashScreenVM.ViewNavigation.*
 
+/**
+ * Splash screen fragment for the application
+ */
 class SplashScreenFragment() : MviFragment<Any, ViewEffect, ViewNavigation, Event, Any, SplashScreenVM>() {
 
     lateinit var binding: FragmentSplashScreenBinding
@@ -69,7 +72,11 @@ class SplashScreenFragment() : MviFragment<Any, ViewEffect, ViewNavigation, Even
         }
     }
     private fun navigateToFragment(pageId: Int) {
-        val navOptions: NavOptions = NavOptions.Builder().setPopUpTo(R.id.splashScreenFragment, true).build()
+        val navOptions: NavOptions = NavOptions.Builder()
+            .setPopUpTo(R.id.splashScreenFragment, true)
+            .setEnterAnim(android.R.anim.fade_in)
+            .setExitAnim(android.R.anim.fade_out)
+            .build()
         navController.navigate(pageId, null, navOptions)
     }
 

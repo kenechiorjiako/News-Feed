@@ -4,6 +4,9 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+/**
+ * Room type converter for converting a {@code List<String>} to a String value and vice-versa.
+ */
 class DataConverter {
 
     @TypeConverter

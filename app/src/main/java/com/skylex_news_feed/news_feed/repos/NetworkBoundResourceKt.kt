@@ -21,11 +21,15 @@ abstract class NetworkBoundResourceKt<ResultType, RequestType> {
         private const val TAG = "NetworkBoundResourceKt"
     }
 
+
     private val result: BehaviorSubject<ResponseKt<ResultType>> = BehaviorSubject.create()
     private val disposables: CompositeDisposable = CompositeDisposable()
 
 
-
+    /**
+     *  The starting point for Network bound resource. Checks whether of not the resource should
+     *  fetch fresh data from the network and dispatches responses accordingly.
+     */
     private fun start() {
         Log.d(
             TAG,
@@ -86,6 +90,13 @@ abstract class NetworkBoundResourceKt<ResultType, RequestType> {
     }
 
 
+    /**
+     *  The backbone of this resource. It first dispatches data from the local db if available.
+     *  It then proceeds to fetching data from the network, saves it locally in the database and
+     *  dispatches the latest result to observers.
+     *
+     *  @param dbSource Observable which provides current local data if available.
+     */
     private fun fetchFromNetwork(dbSource: Maybe<ResultType>) {
         val apiResponse: Maybe<RequestType>? = createNetworkRequest()
         disposables.add(
@@ -228,17 +239,38 @@ abstract class NetworkBoundResourceKt<ResultType, RequestType> {
     }
 
 
-
-
+    /**
+     *  Called when this resource successfully fetches data from network
+     */
     protected abstract fun onFetchFromNetworkSuccessSideEffects()
 
+
+    /**
+     * called when this resource unsuccessfully fetches data from network
+     */
     protected abstract fun onFetchFromNetworkErrorSideEffects()
 
+
+    /**
+     *  saves network result to local database
+     *
+     *  @param item Result to save to db
+     */
     protected abstract fun saveCallResult(item: RequestType): Completable
 
+
+    /**
+     *  checks whether or not the resource should fetch fresh data from network
+     */
     protected abstract fun shouldFetch(data: ResultType?): Single<Boolean>
 
+    /**
+     * loads data from db
+     */
     protected abstract fun loadFromDb(): Maybe<ResultType>
 
+    /**
+     * A call to load data from network
+     */
     protected abstract fun createNetworkRequest(): Maybe<RequestType>
 }

@@ -3,7 +3,11 @@ package com.skylex_news_feed.news_feed.util
 import android.util.TypedValue
 import com.skylex_news_feed.news_feed.MyApplication
 
-// Int extension functions
+/**
+ *  A set of extension functions that convert an int, float and double to their pixel equivalent.
+ */
+
+
 fun Int.toPx(): Int {
     return TypedValue.applyDimension(
         TypedValue.COMPLEX_UNIT_DIP,

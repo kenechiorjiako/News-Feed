@@ -9,8 +9,11 @@ import com.skylex_news_feed.news_feed.data.entities.News
 import com.skylex_news_feed.news_feed.util.DataConverter
 
 
+/**
+ * Local data source for the application
+ */
 @TypeConverters(DataConverter::class)
-@Database(entities = arrayOf(News::class), version = 1)
+@Database(entities = [News::class], version = 1)
 abstract class LocalDataSource : RoomDatabase() {
 
     abstract fun newsDao(): NewsDao

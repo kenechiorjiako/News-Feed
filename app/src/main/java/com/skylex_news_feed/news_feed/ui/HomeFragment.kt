@@ -121,6 +121,12 @@ class HomeFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, Event,
             is ShowToast -> showToast(viewEffect.message, viewEffect.length)
         }
     }
+
+    /**
+     * Method to show a toast in the UI.
+     *  @param message Message to show.
+     *  @param length how long to show this toast.
+     */
     private fun showToast(message: String, length: Int) {
         Toast.makeText(context, message, length).show()
     }

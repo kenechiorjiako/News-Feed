@@ -6,6 +6,9 @@ import io.reactivex.rxjava3.core.Maybe
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+/**
+ * News Service for the application
+ */
 interface NewsService {
 
     @GET("latest-news")

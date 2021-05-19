@@ -4,6 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * News Entity that can be fetched directly from the network using Retrofit and parsed to Room.
+ */
 @Entity(tableName = "news")
 data class News (
     @PrimaryKey

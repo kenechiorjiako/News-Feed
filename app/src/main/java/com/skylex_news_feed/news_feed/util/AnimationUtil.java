@@ -7,6 +7,9 @@ import android.animation.ObjectAnimator;
 import android.view.View;
 import android.view.animation.Interpolator;
 
+/**
+ * My helper class for animating views in android
+ */
 public class AnimationUtil {
 
     //region FIELDS
@@ -102,6 +105,15 @@ public class AnimationUtil {
         rotate.start();
     }
 
+    /**
+     * Fades out a view from {@code fromValue} to {@code toValue}
+     * @param view view to be
+     * @param duration duration of animation
+     * @param fromValue value to fade out from
+     * @param toValue value to fade out to
+     * @param endVisibility visibility to be set on the view after it has been animated.
+     * @return an Object animator
+     */
     public ObjectAnimator fadeOut(View view, int duration, float fromValue, float toValue, int endVisibility) {
 
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(view, "alpha", fromValue, toValue);
@@ -132,6 +144,14 @@ public class AnimationUtil {
         return fadeOut;
     }
 
+    /**
+     * Fades in a view form {@code fromValue} to {@code toValue}
+     * @param view view to be faded in
+     * @param duration duration of animation
+     * @param fromValue start alpha value
+     * @param toValue end alpha value
+     * @return object animator for the animation.
+     */
     public ObjectAnimator fadeIn(View view, int duration, float fromValue, float toValue) {
 
         ObjectAnimator fadeIn = ObjectAnimator.ofFloat(view, "alpha", fromValue, toValue);
@@ -147,6 +167,15 @@ public class AnimationUtil {
         return fadeIn;
     }
 
+    /**
+     * Slides a view vertically from {@code fromValue} to {@code toValue}
+     * @param view view to slide
+     * @param duration duration of animation
+     * @param fromValue start value
+     * @param toValue end value
+     * @param interpolator interpolator to be applied to the animation
+     * @return object animator for the animation
+     */
     public ObjectAnimator slideY(View view, int duration, float fromValue, float toValue, Interpolator interpolator) {
         ObjectAnimator slideUp = ObjectAnimator.ofFloat(view, "translationY", fromValue, toValue);
         slideUp.setDuration(duration);
@@ -155,6 +184,15 @@ public class AnimationUtil {
         return slideUp;
     }
 
+    /**
+     * Slides a view horizontally from {@code fromValue} to {@code toValue}
+     * @param view view to slide
+     * @param duration duration of animation
+     * @param fromValue start value
+     * @param toValue end value
+     * @param interpolator interpolator to be applied to the animation
+     * @return object animator for the animation
+     */
     public ObjectAnimator slideX(View view, int duration, float fromValue, float toValue, Interpolator interpolator) {
         ObjectAnimator slideSideways = ObjectAnimator.ofFloat(view, "translationX", fromValue, toValue);
         slideSideways.setDuration(duration);

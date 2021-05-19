@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("com.example.new_app", appContext.packageName)
+        assertEquals("com.skylex_news_feed.news_feed", appContext.packageName)
     }
 }

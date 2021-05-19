@@ -5,6 +5,7 @@ import com.skylex_news_feed.news_feed.data.entities.News
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
 
+
 @Dao
 interface NewsDao {
 

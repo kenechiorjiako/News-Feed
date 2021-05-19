@@ -15,7 +15,7 @@ class SplashScreenVM : MviViewModel<Any, ViewEffect, ViewNavigation, Event, Any>
 
 
     override fun reduceToViewState(stateChange: Any) {
-        TODO("Not yet implemented")
+
     }
 
 
@@ -24,6 +24,12 @@ class SplashScreenVM : MviViewModel<Any, ViewEffect, ViewNavigation, Event, Any>
             is PageActive -> handlePageActiveEvent()
         }
     }
+
+    /**
+     * handles a {@code PageActive} event coming from a view.
+     * starts a seven second delay, after which the a view navigation object is
+     * sent to the view to observe and handle.
+     */
     private fun handlePageActiveEvent() {
         firstLoadOccurred = true
         disposables.add(
@@ -41,12 +47,23 @@ class SplashScreenVM : MviViewModel<Any, ViewEffect, ViewNavigation, Event, Any>
 
 
 
+    /**
+     * Various events that can be dispatched from a view and handled by this viewModel
+     */
     sealed class Event {
         object PageActive: Event()
     }
+
+    /**
+     * View Effects for the view to observe and handle
+     */
     sealed class ViewEffect {
         object ShowLogo: ViewEffect()
     }
+
+    /**
+     * View navigations for the view to observe and handle
+     */
     sealed class ViewNavigation {
         data class NavigateToFragment(val pageId: Int): ViewNavigation()
     }

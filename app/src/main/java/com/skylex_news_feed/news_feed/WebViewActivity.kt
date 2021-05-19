@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.skylex_news_feed.news_feed.databinding.ActivityWebViewBinding
 
 
+/**
+ * An Activity that displays a webView to display news Items and all their details.
+ */
 class WebViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWebViewBinding

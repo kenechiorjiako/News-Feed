@@ -9,6 +9,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 
+/**
+ * Service builder for the application
+ */
 object ServiceBuilder {
 
     private const val BASE_URL = "http://api.currentsapi.services/v1/"

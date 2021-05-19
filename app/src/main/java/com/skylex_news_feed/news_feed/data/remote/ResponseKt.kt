@@ -1,5 +1,8 @@
 package com.skylex_news_feed.news_feed.data.remote
 
+/**
+ *  Represents a network/local call response
+ */
 class ResponseKt<T>private constructor(val loading: Boolean, val data: T?, val error: Throwable?) {
 
     enum class DetailedState {
