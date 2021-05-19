@@ -5,7 +5,7 @@ The app was made with android studio, kotlin and a bit of java.
 
 It makes use of the following tools:
 
-MVI Architecture: to structure code and effectively handle app state
+MVVM Architecture: to structure code and effectively handle app state....With a little bit of MVI :)
 
 RxJava: For multithreading and Reactive Programming
 
