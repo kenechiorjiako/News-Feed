@@ -1,0 +1,13 @@
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.skylex_news_feed.news_feed">
+
+    <application
+        android:name="com.skylex_news_feed.news_feed.MyApplication">
+        <activity
+            android:name=".SingleFragmentActivity"
+            android:exported="false">
+        </activity>
+    </application>
+
+</manifest>

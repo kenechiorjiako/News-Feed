@@ -17,12 +17,14 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name="com.skylex_news_feed.news_feed.WebViewActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
 
         </activity>
         <activity
             android:name="com.skylex_news_feed.news_feed.ui.MainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

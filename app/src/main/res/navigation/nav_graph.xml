@@ -10,13 +10,10 @@
         android:name="com.skylex_news_feed.news_feed.ui.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
+
         <action
-            android:id="@+id/action_homeFragment_to_newsDetailFragment"
-            app:destination="@id/newsDetailFragment"
-            app:enterAnim="@anim/fragment_fade_enter"
-            app:exitAnim="@anim/fragment_fade_exit"
-            app:popEnterAnim="@anim/fragment_close_enter"
-            app:popExitAnim="@anim/fragment_close_exit" />
+            android:id="@+id/action_homeFragment_to_newsDetailFragment2"
+            app:destination="@id/newsDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/newsDetailFragment"

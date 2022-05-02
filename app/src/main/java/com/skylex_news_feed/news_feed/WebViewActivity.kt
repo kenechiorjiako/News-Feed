@@ -17,7 +17,7 @@ import com.skylex_news_feed.news_feed.databinding.ActivityWebViewBinding
 class WebViewActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWebViewBinding
-    private lateinit var pageUrl: String
+    private var pageUrl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,10 +38,12 @@ class WebViewActivity : AppCompatActivity() {
 
     private fun setupPage() {
         binding.apply {
-            webview.settings.loadsImagesAutomatically = true;
-            webview.settings.javaScriptEnabled = true;
-            webview.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY;
-            webview.loadUrl(pageUrl);
+            webview.settings.loadsImagesAutomatically = true
+            webview.settings.javaScriptEnabled = true
+            webview.scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
+            pageUrl?.let {
+                webview.loadUrl(it)
+            }
         }
     }
 

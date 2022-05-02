@@ -84,7 +84,7 @@ class HomeFragmentVM @ViewModelInject constructor(
      * Handles news item click events coming from the view.
      */
     private fun handleItemSelected(news: News) {
-        val direction = HomeFragmentDirections.actionHomeFragmentToNewsDetailFragment(news.id)
+        val direction = HomeFragmentDirections.actionHomeFragmentToNewsDetailFragment2(news.id)
         viewNavigation = ViewNavigation.NavigateToFragment(direction)
     }
 
