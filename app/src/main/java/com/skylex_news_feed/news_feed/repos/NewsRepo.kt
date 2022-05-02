@@ -3,7 +3,7 @@ package com.skylex_news_feed.news_feed.repos
 import com.skylex_news_feed.news_feed.data.entities.News
 import com.skylex_news_feed.news_feed.data.local.LocalDataSource
 import com.skylex_news_feed.news_feed.data.remote.RemoteDataSource
-import com.skylex_news_feed.news_feed.data.remote.ResponseKt
+import com.skylex_news_feed.news_feed.data.remote.Response
 import com.skylex_news_feed.news_feed.util.API_KEY
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
@@ -50,8 +50,8 @@ class NewsRepo
      * a response containing data cached in the database and proceeds to fetching the latest news
      * items from a remote source.
      */
-    fun getLatestNews() : Observable<ResponseKt<List<News>>> {
-        return object : NetworkBoundResourceKt<List<News>, List<News>>() {
+    fun getLatestNews() : Observable<Response<List<News>>> {
+        return object : NetworkBoundResource<List<News>, List<News>>() {
             override fun onFetchFromNetworkSuccessSideEffects() {
 
             }

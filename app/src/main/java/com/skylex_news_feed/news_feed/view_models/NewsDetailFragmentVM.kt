@@ -13,13 +13,15 @@ import com.skylex_news_feed.news_feed.view_models.NewsDetailFragmentVM.*
 import com.skylex_news_feed.news_feed.view_models.NewsDetailFragmentVM.Event.*
 import com.skylex_news_feed.news_feed.view_models.NewsDetailFragmentVM.PartialStateChange.*
 import com.skylex_news_feed.news_feed.view_models.NewsDetailFragmentVM.ViewNavigation.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
-class NewsDetailFragmentVM @ViewModelInject constructor(
-    private val newsRepo: NewsRepo,
-    @Assisted savedStateHandle: SavedStateHandle
+@HiltViewModel
+class NewsDetailFragmentVM @Inject constructor(
+    private val newsRepo: NewsRepo
 ): MviViewModel<ViewState, ViewEffect, ViewNavigation, Event, PartialStateChange>() {
 
 

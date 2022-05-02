@@ -2,12 +2,9 @@ package com.skylex_news_feed.news_feed.view_models
 
 import android.util.Log
 import android.widget.Toast
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.NavDirections
 import com.skylex_news_feed.news_feed.data.entities.News
-import com.skylex_news_feed.news_feed.data.remote.ResponseKt
+import com.skylex_news_feed.news_feed.data.remote.Response
 import com.skylex_news_feed.news_feed.repos.NewsRepo
 import com.skylex_news_feed.news_feed.ui.HomeFragmentDirections
 import com.skylex_news_feed.news_feed.util.MviViewModel
@@ -15,14 +12,16 @@ import com.skylex_news_feed.news_feed.view_models.HomeFragmentVM.*
 import com.skylex_news_feed.news_feed.view_models.HomeFragmentVM.Event.*
 import com.skylex_news_feed.news_feed.view_models.HomeFragmentVM.PartialStateChange.*
 import com.skylex_news_feed.news_feed.view_models.HomeFragmentVM.ViewEffect.ShowToast
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
+import javax.inject.Inject
 
-class HomeFragmentVM @ViewModelInject constructor(
-    private val newsRepo: NewsRepo,
-    @Assisted savedStateHandle: SavedStateHandle
+@HiltViewModel
+class HomeFragmentVM @Inject constructor(
+    private val newsRepo: NewsRepo
 ) : MviViewModel<ViewState, ViewEffect, ViewNavigation, Event, PartialStateChange>() {
 
     init {
@@ -130,15 +129,15 @@ class HomeFragmentVM @ViewModelInject constructor(
                         "getNewsItems: got response with state ${response.detailedState}"
                     )
                     val error: Throwable? = response.error
-                    val detailedState: ResponseKt.DetailedState? = response.detailedState
+                    val detailedState: Response.DetailedState? = response.detailedState
                     when {
-                        detailedState === ResponseKt.DetailedState.ERROR_WITH_NO_DATA -> {
+                        detailedState === Response.DetailedState.ERROR_WITH_NO_DATA -> {
                             subject.onError(error)
                         }
-                        detailedState === ResponseKt.DetailedState.EMPTY_RESPONSE -> {
+                        detailedState === Response.DetailedState.EMPTY_RESPONSE -> {
                             subject.onError(Throwable("Error loading latest news, please try again."))
                         }
-                        detailedState === ResponseKt.DetailedState.ERROR_WITH_DATA -> {
+                        detailedState === Response.DetailedState.ERROR_WITH_DATA -> {
                             viewEffect = ShowToast("Unable to refresh feed. Please check your network and try again.", Toast.LENGTH_SHORT)
                         }
                     }

@@ -1,7 +1,7 @@
 package com.skylex_news_feed.news_feed.repos
 
 import android.util.Log
-import com.skylex_news_feed.news_feed.data.remote.ResponseKt
+import com.skylex_news_feed.news_feed.data.remote.Response
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Maybe
@@ -12,19 +12,19 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 
-abstract class NetworkOnlyResourceKt<RequestType> {
+abstract class NetworkOnlyResource<RequestType> {
 
     companion object {
         private const val TAG = "NetworkBoundResourceKt"
     }
 
-    private val result: BehaviorSubject<ResponseKt<RequestType>> = BehaviorSubject.create()
+    private val result: BehaviorSubject<Response<RequestType>> = BehaviorSubject.create()
     private val disposables: CompositeDisposable = CompositeDisposable()
 
 
 
     private fun start() {
-        result.onNext(ResponseKt.LOADING(null))
+        result.onNext(Response.LOADING(null))
         fetchFromNetwork()
     }
 
@@ -54,7 +54,7 @@ abstract class NetworkOnlyResourceKt<RequestType> {
                                 )
                                 onFetchFromNetworkSuccessSideEffects()
                                 result.onNext(
-                                    ResponseKt.SUCCESS(data)
+                                    Response.SUCCESS(data)
                                 )
                                 result.onComplete()
                                 disposables.dispose()
@@ -71,7 +71,7 @@ abstract class NetworkOnlyResourceKt<RequestType> {
                             "fetchFromNetwork: calling all side effects of an error occurring while trying to fetch data from our api"
                         )
                         onFetchFromNetworkErrorSideEffects()
-                        result.onNext(ResponseKt.ERROR(throwable, null))
+                        result.onNext(Response.ERROR(throwable, null))
                         result.onComplete()
                         disposables.dispose()
                     },
@@ -80,7 +80,7 @@ abstract class NetworkOnlyResourceKt<RequestType> {
                             TAG,
                             "fetchFromNetwork: we got no data from the api!"
                         )
-                        result.onNext(ResponseKt.SUCCESS(null))
+                        result.onNext(Response.SUCCESS(null))
                         result.onComplete()
                         disposables.dispose()
                     }
@@ -89,7 +89,7 @@ abstract class NetworkOnlyResourceKt<RequestType> {
     }
 
 
-    open fun toObservable(): Observable<ResponseKt<RequestType>> {
+    open fun toObservable(): Observable<Response<RequestType>> {
         return result
             .doOnSubscribe { start() }
             .doOnDispose { disposables.dispose() }
