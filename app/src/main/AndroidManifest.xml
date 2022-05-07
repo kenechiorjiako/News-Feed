@@ -16,7 +16,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.skylex_news_feed.news_feed.WebViewActivity"
+            android:name="com.skylex_news_feed.news_feed.ui.WebViewActivity"
             android:screenOrientation="portrait"
             android:exported="true">
 

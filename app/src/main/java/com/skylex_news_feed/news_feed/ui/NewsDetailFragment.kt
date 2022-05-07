@@ -9,6 +9,7 @@ import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -175,7 +176,11 @@ class NewsDetailFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, 
     }
 
     override fun renderViewEffect(viewEffect: ViewEffect) {
-        TODO("Not yet implemented")
+        when(viewEffect) {
+            is ViewEffect.ShowToast -> {
+                Toast.makeText(context, viewEffect.message, viewEffect.length).show()
+            }
+        }
     }
 
     override fun handleViewNavigation(viewNavigation: ViewNavigation) {
@@ -195,7 +200,9 @@ class NewsDetailFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, 
      */
     override fun dispatchLoadPageEvent() {
         val newsId = arguments?.let { NewsDetailFragmentArgs.fromBundle(it).newsId }
-        mEvents.onNext(newsId?.let { LoadPageEvent(it) })
+        newsId?.let {
+            mEvents.onNext(LoadPageEvent(it))
+        }
     }
 
     companion object {

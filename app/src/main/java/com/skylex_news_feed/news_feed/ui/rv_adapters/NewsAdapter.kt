@@ -12,22 +12,22 @@ import com.skylex_news_feed.news_feed.databinding.NewsListItemV1Binding
 import com.squareup.picasso.Picasso
 
 
-class NewsAdapter(private val eventHandler: EventHandler? = null) : RecyclerView.Adapter<NewsAdapter.ViewHolder1>()     {
+class NewsAdapter(private val eventHandler: EventHandler? = null) : RecyclerView.Adapter<NewsAdapter.ViewHolder>()     {
 
     private var newsItems: MutableList<News> = mutableListOf()
     private var globalImageWidth: Int = 0
     private var globalImageHeight: Int = 0
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder1 {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(
             R.layout.news_list_item_v1,
             parent,
             false
         )
-        return ViewHolder1(itemView, eventHandler)
+        return ViewHolder(itemView, eventHandler)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder1, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(newsItems[position])
     }
 
@@ -42,11 +42,11 @@ class NewsAdapter(private val eventHandler: EventHandler? = null) : RecyclerView
         DiffUtil.calculateDiff(diffCallback).dispatchUpdatesTo(this)
     }
 
-    inner class ViewHolder1(itemView: View, private val eventHandler: EventHandler?) : RecyclerView.ViewHolder(
+    inner class ViewHolder(itemView: View, private val eventHandler: EventHandler?) : RecyclerView.ViewHolder(
         itemView
     ) {
 
-        private val binding : NewsListItemV1Binding = NewsListItemV1Binding.bind(itemView)
+        val binding : NewsListItemV1Binding = NewsListItemV1Binding.bind(itemView)
         private var news: News? = null
         private var permitGlobalLoading = false
 

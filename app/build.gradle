@@ -43,6 +43,15 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+            unitTests.returnDefaultValues = true
+        }
+    }
+    hilt {
+        enableTransformForLocalTests = true
+    }
 }
 
 dependencies {

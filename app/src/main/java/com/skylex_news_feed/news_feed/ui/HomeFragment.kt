@@ -25,10 +25,11 @@ import com.skylex_news_feed.news_feed.view_models.HomeFragmentVM.ViewEffect.*
 import com.skylex_news_feed.news_feed.view_models.HomeFragmentVM.ViewNavigation.*
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class HomeFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, Event, PartialStateChange, HomeFragmentVM> () {
 
-    private lateinit var binding: FragmentHomeBinding
+@AndroidEntryPoint
+class HomeFragment : MviFragment<ViewState, ViewEffect, ViewNavigation, Event, PartialStateChange, HomeFragmentVM>() {
+
+    lateinit var binding: FragmentHomeBinding
     private lateinit var navController: NavController
 
     override val viewModel: HomeFragmentVM by viewModels()
@@ -41,6 +42,7 @@ class HomeFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, Event,
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater, container, false)
 
+
         return binding.root
     }
 
@@ -50,7 +52,7 @@ class HomeFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, Event,
     }
     override fun setupViews() {
         binding.apply {
-            val itemDecoration: VerticalLinearListItemDecor = VerticalLinearListItemDecor(
+            val itemDecoration = VerticalLinearListItemDecor(
                 top = 16.toPx(),
                 bottom = 24.toPx(),
                 start = 16.toPx(),
@@ -69,7 +71,7 @@ class HomeFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, Event,
             }
 
             refreshButton.setOnClickListener {
-                mEvents.onNext(LoadPageEvent)
+                mEvents.onNext(LoadPage)
             }
         }
     }
@@ -143,6 +145,6 @@ class HomeFragment() : MviFragment<ViewState, ViewEffect, ViewNavigation, Event,
 
 
     override fun dispatchLoadPageEvent() {
-        mEvents.onNext(LoadPageEvent)
+        mEvents.onNext(LoadPage)
     }
 }

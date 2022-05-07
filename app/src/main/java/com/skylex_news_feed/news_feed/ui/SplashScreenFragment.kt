@@ -22,16 +22,12 @@ import com.skylex_news_feed.news_feed.view_models.SplashScreenVM.ViewNavigation.
 /**
  * Splash screen fragment for the application
  */
-class SplashScreenFragment() : MviFragment<Any, ViewEffect, ViewNavigation, Event, Any, SplashScreenVM>() {
+class SplashScreenFragment : MviFragment<Any, ViewEffect, ViewNavigation, Event, Any, SplashScreenVM>() {
 
     lateinit var binding: FragmentSplashScreenBinding
     override val viewModel: SplashScreenVM by viewModels()
     private lateinit var navController: NavController
     private val animationUtil: AnimationUtil = AnimationUtil()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSplashScreenBinding.inflate(inflater, container, false)

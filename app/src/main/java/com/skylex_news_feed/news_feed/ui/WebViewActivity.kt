@@ -1,4 +1,4 @@
-package com.skylex_news_feed.news_feed
+package com.skylex_news_feed.news_feed.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
+import com.skylex_news_feed.news_feed.R
 import com.skylex_news_feed.news_feed.databinding.ActivityWebViewBinding
 
 

@@ -1,6 +1,5 @@
 package com.skylex_news_feed.news_feed.view_models
 
-import android.util.Log
 import android.widget.Toast
 import androidx.navigation.NavDirections
 import com.skylex_news_feed.news_feed.data.entities.News
@@ -16,7 +15,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.BehaviorSubject
 import javax.inject.Inject
 
 @HiltViewModel
@@ -58,7 +56,7 @@ class HomeFragmentVM @Inject constructor(
 
     override fun process(viewEvent: Event) {
         when (viewEvent) {
-            is LoadPageEvent -> handleLoadPageEvent()
+            is LoadPage -> handleLoadPageEvent()
             is NewsItemSelected -> handleItemSelected(viewEvent.news)
             is RefreshPage -> handleRefreshPageEvent()
         }
@@ -71,8 +69,6 @@ class HomeFragmentVM @Inject constructor(
     private fun handleLoadPageEvent() {
         reduceToViewState(LoadingPage)
         getNewsItems()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { reduceToViewState(PageLoaded(it)) },
                 { reduceToViewState(PageLoadError(Throwable("Could not fetch data. Please try again."))) }
@@ -94,8 +90,6 @@ class HomeFragmentVM @Inject constructor(
     private fun handleRefreshPageEvent() {
         reduceToViewState(PageRefreshing(true))
         getNewsItems()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     reduceToViewState(PageLoaded(it))
@@ -117,25 +111,19 @@ class HomeFragmentVM @Inject constructor(
      * @return an observable that dispatches latest news items from local and network data sources.
      */
     private fun getNewsItems(): Observable<List<News>> {
-        val subject: BehaviorSubject<List<News>> = BehaviorSubject.create()
-
-        val newsResponse: Observable<List<News>?> =
+        val newsResponse: Observable<List<News>> =
             newsRepo.getLatestNews()
                 .subscribeOn(Schedulers.io())
-                .doOnSubscribe { disposable1 -> disposables.add(disposable1) }
+                .observeOn(AndroidSchedulers.mainThread())
                 .doOnNext { response ->
-                    Log.d(
-                        Companion.TAG,
-                        "getNewsItems: got response with state ${response.detailedState}"
-                    )
                     val error: Throwable? = response.error
                     val detailedState: Response.DetailedState? = response.detailedState
                     when {
                         detailedState === Response.DetailedState.ERROR_WITH_NO_DATA -> {
-                            subject.onError(error)
+                            error?.let { throw(it) }
                         }
                         detailedState === Response.DetailedState.EMPTY_RESPONSE -> {
-                            subject.onError(Throwable("Error loading latest news, please try again."))
+                            throw Throwable("Error loading latest news, please try again.")
                         }
                         detailedState === Response.DetailedState.ERROR_WITH_DATA -> {
                             viewEffect = ShowToast("Unable to refresh feed. Please check your network and try again.", Toast.LENGTH_SHORT)
@@ -143,11 +131,9 @@ class HomeFragmentVM @Inject constructor(
                     }
                 }
                 .filter { response -> response.data != null }
-                .map { response -> response.data }
-                .doOnNext { latestNews -> subject.onNext(latestNews) }
-                .doOnComplete { subject.onComplete() }
+                .map { response -> response.data!! }
 
-        return subject.doOnSubscribe{ newsResponse.subscribe() }
+        return newsResponse
     }
 
 
@@ -164,7 +150,7 @@ class HomeFragmentVM @Inject constructor(
         val pageLoadError: Throwable? = null,
         val pageRefreshing: Boolean = false,
         val newsItems: List<News> = emptyList()
-    ) {}
+    )
 
     /**
      * View Effects for the view to observe and handle
@@ -194,7 +180,7 @@ class HomeFragmentVM @Inject constructor(
      * Various events that can be dispatched from a view and handled by this viewModel
      */
     sealed class Event {
-        object LoadPageEvent : Event()
+        object LoadPage : Event()
         data class NewsItemSelected(val news: News) : Event()
         object RefreshPage : Event()
     }

@@ -1,13 +1,10 @@
 package com.skylex_news_feed.news_feed.view_models
 
 import android.content.Intent
-import androidx.hilt.Assisted
-import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.SavedStateHandle
 import com.skylex_news_feed.news_feed.MyApplication
-import com.skylex_news_feed.news_feed.WebViewActivity
 import com.skylex_news_feed.news_feed.data.entities.News
 import com.skylex_news_feed.news_feed.repos.NewsRepo
+import com.skylex_news_feed.news_feed.ui.WebViewActivity
 import com.skylex_news_feed.news_feed.util.MviViewModel
 import com.skylex_news_feed.news_feed.view_models.NewsDetailFragmentVM.*
 import com.skylex_news_feed.news_feed.view_models.NewsDetailFragmentVM.Event.*

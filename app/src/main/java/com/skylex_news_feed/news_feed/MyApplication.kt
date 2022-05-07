@@ -3,6 +3,7 @@ package com.skylex_news_feed.news_feed
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 
+
 @HiltAndroidApp
 class MyApplication : Application() {
 
